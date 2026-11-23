@@ -1,0 +1,69 @@
+<div class="container my-5">
+  <div class="conference-container-box">
+    <!-- Header with calendar icon and titles -->
+    <div class="header-section">
+      <div class="calendar-icon">
+        📅
+      </div>
+      <div class="title-wrap">
+        <h3 class="main-title">Liste des conférences à venir</h3>
+        <p class="subtitle">Cliquer sur une conférence pour afficher ses détails.</p>
+      </div>
+    </div>
+
+    <!-- Search Input -->
+    <div class="search-section">
+      <input
+        type="text"
+        class="form-control search-input"
+        placeholder="Taper le titre de la conférence"
+        [(ngModel)]="searchQuery"
+      />
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="row g-4">
+      @for (conf of filteredConferences(); track conf.id) {
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="conference-card">
+            <!-- Image de la conférence -->
+            <img [src]="conf.imageUrl" [alt]="conf.titre" class="conf-img" />
+
+            <h5 class="conf-title">{{ conf.titre }}</h5>
+            
+            <div class="conf-details">
+              <p class="detail-line">
+                <span class="label">Date :</span> {{ conf.date | date:'dd/MM/yyyy' }}
+              </p>
+              <p class="detail-line">
+                <span class="label">Lieu :</span> {{ conf.lieu }}
+              </p>
+              <p class="detail-line">
+                <span class="label">Places restantes :</span>
+                <span class="places-count" [class.zero]="conf.nbPlaces === 0">
+                  {{ conf.nbPlaces }}
+                </span>
+              </p>
+            </div>
+
+            <div class="action-wrap">
+              <button
+                class="btn-action"
+                [class.btn-green]="conf.nbPlaces > 0"
+                [class.btn-red]="conf.nbPlaces === 0"
+                [disabled]="conf.nbPlaces === 0"
+                (click)="inscrire(conf)"
+              >
+                S'inscrire
+              </button>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <div class="col-12 text-center py-4">
+          <p class="text-muted">Aucune conférence ne correspond à votre recherche.</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>
